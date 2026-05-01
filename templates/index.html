@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI Music Generator</title>
+
+<style>
+
+body{
+font-family: Arial;
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+transition:0.5s;
+color:white;
+text-align:center;
+margin:0;
+}
+
+.overlay{
+background:rgba(0,0,0,0.55);
+min-height:100vh;
+padding-bottom:40px;
+}
+
+h1{
+padding-top:30px;
+}
+
+.genre-grid{
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:15px;
+width:80%;
+margin:auto;
+margin-top:30px;
+}
+
+.genre-card{
+background:#1e293b;
+padding:20px;
+border-radius:10px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.genre-card:hover{
+background:#38bdf8;
+color:black;
+transform:scale(1.05);
+}
+
+button{
+margin-top:30px;
+padding:12px 25px;
+font-size:18px;
+border:none;
+background:#22c55e;
+color:white;
+border-radius:8px;
+cursor:pointer;
+}
+
+button:hover{
+background:#16a34a;
+}
+
+.loader{
+display:none;
+margin-top:20px;
+font-size:20px;
+color:#38bdf8;
+}
+
+.music-card{
+background:#1e293b;
+padding:15px;
+border-radius:8px;
+margin:10px;
+}
+
+audio{
+width:250px;
+}
+
+</style>
+</head>
+
+<body style="background-image:url('{{bg_image}}')">
+
+<div class="overlay">
+
+<h1>🎵 AI Music Generator</h1>
+
+<form method="POST" action="/generate" onsubmit="showLoader()">
+
+<input type="hidden" name="genre" id="genre">
+
+<div class="genre-grid">
+
+<div class="genre-card" onclick="selectGenre('sad')">Sad</div>
+<div class="genre-card" onclick="selectGenre('happy')">Happy</div>
+<div class="genre-card" onclick="selectGenre('romance')">Romance</div>
+<div class="genre-card" onclick="selectGenre('action')">Action</div>
+<div class="genre-card" onclick="selectGenre('thriller')">Thriller</div>
+
+<div class="genre-card" onclick="selectGenre('edm')">EDM</div>
+<div class="genre-card" onclick="selectGenre('rock')">Rock</div>
+<div class="genre-card" onclick="selectGenre('jazz')">Jazz</div>
+<div class="genre-card" onclick="selectGenre('lofi')">LoFi</div>
+<div class="genre-card" onclick="selectGenre('ambient')">Ambient</div>
+
+<div class="genre-card" onclick="selectGenre('hiphop')">HipHop</div>
+<div class="genre-card" onclick="selectGenre('cinematic')">Cinematic</div>
+<div class="genre-card" onclick="selectGenre('piano')">Piano</div>
+<div class="genre-card" onclick="selectGenre('horror')">Horror</div>
+<div class="genre-card" onclick="selectGenre('scifi')">Sci-Fi</div>
+
+</div>
+
+<button type="submit">Generate Music</button>
+
+<div class="loader" id="loader">
+🤖 AI is generating music...
+</div>
+
+</form>
+
+{% if songs %}
+
+<h2>{{genre}} Music Generated</h2>
+
+<div style="display:flex;flex-wrap:wrap;justify-content:center">
+
+{% for song in songs %}
+
+<div class="music-card">
+
+<audio controls>
+<source src="{{ url_for('static', filename='music/' + song) }}" type="audio/wav">
+</audio>
+
+<br><br>
+
+<a href="{{ url_for('static', filename='music/' + song) }}" download>
+Download
+</a>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endif %}
+
+</div>
+
+<script>
+
+function selectGenre(g){
+
+document.getElementById("genre").value=g
+
+let cards=document.querySelectorAll(".genre-card")
+
+cards.forEach(c=>c.style.background="#1e293b")
+
+event.target.style.background="#22c55e"
+
+const genreImages = {
+
+sad:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
+
+happy:"https://images.unsplash.com/photo-1500534623283-312aade485b7",
+
+romance:"https://images.unsplash.com/photo-1516589091380-5d8e87df6999",
+
+action:"https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+
+thriller:"https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d",
+
+edm:"https://images.unsplash.com/photo-1501386761578-eac5c94b800a",
+
+rock:"https://images.unsplash.com/photo-1511379938547-c1f69419868d",
+
+jazz:"https://images.unsplash.com/photo-1507838153414-b4b713384a76",
+
+lofi:"https://images.unsplash.com/photo-1500534314209-a25ddb2bd429",
+
+ambient:"https://images.unsplash.com/photo-1500534314209-a25ddb2bd429",
+
+hiphop:"https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4",
+
+cinematic:"https://images.unsplash.com/photo-1489599849927-2ee91cede3ba",
+
+piano:"https://images.unsplash.com/photo-1513883049090-d0b7439799bf",
+
+horror:"https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d",
+
+scifi:"https://images.unsplash.com/photo-1446776811953-b23d57bd21aa"
+
+}
+
+document.body.style.backgroundImage="url('"+genreImages[g]+"')"
+
+}
+
+function showLoader(){
+
+document.getElementById("loader").style.display="block"
+
+}
+
+</script>
+
+</body>
+</html>

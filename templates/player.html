@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Generated Music</title>
+</head>
+
+<body style="text-align:center">
+
+<h1>{{genre}} Music Generated</h1>
+
+{% for song in songs %}
+
+<h3>Generated Music {{ loop.index }}</h3>
+
+<audio controls>
+<source src="{{ url_for('static', filename='music/' + song) }}" type="audio/wav">
+</audio>
+
+<br><br>
+
+<a href="{{ url_for('static', filename='music/' + song) }}" download>
+<button>Download</button>
+</a>
+
+<hr>
+
+{% endfor %}
+
+<a href="/">
+<button>Generate Again</button>
+</a>
+
+</body>
+
+</html>
